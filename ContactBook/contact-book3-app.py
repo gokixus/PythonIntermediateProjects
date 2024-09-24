@@ -10,34 +10,37 @@ class PersonContact(QWidget):
         self.loadFile()
 
     def initUI(self):
+        #app title
         self.setWindowTitle("Contact Manager")
         
-        # Layout
+        #box layout
         self.layout = QVBoxLayout()
 
-        # Name and Surname Input
+        #name input
         self.nameLabel = QLabel("Name:")
         self.layout.addWidget(self.nameLabel)
         self.nameInput = QLineEdit()
         self.layout.addWidget(self.nameInput)
 
+        #surname input
         self.surnameLabel = QLabel("Surname:")
         self.layout.addWidget(self.surnameLabel)
         self.surnameInput = QLineEdit()
         self.layout.addWidget(self.surnameInput)
 
-        # Phone and Email Input
+        #phone input
         self.phoneLabel = QLabel("Phone No:")
         self.layout.addWidget(self.phoneLabel)
         self.phoneInput = QLineEdit()
         self.layout.addWidget(self.phoneInput)
 
+        #email input
         self.emailLabel = QLabel("Mail:")
         self.layout.addWidget(self.emailLabel)
         self.emailInput = QLineEdit()
         self.layout.addWidget(self.emailInput)
 
-        # Buttons
+        #buttons
         self.addButton = QPushButton("Add Person")
         self.addButton.clicked.connect(self.addPerson)
         self.layout.addWidget(self.addButton)
@@ -60,6 +63,7 @@ class PersonContact(QWidget):
 
         self.setLayout(self.layout)
 
+    #person add struct
     def addPerson(self):
         self.resultArea.clear()
         
@@ -88,6 +92,7 @@ class PersonContact(QWidget):
         self.phoneInput.clear()
         self.emailInput.clear()
 
+    #person delete struct
     def removePerson(self):
         self.resultArea.clear()
         name = self.nameInput.text()
@@ -102,6 +107,7 @@ class PersonContact(QWidget):
 
         QMessageBox.warning(self, "Error", "The person was not found.")
         
+    #person about struct
     def aboutPerson(self):
         name = self.nameInput.text()
         surname = self.surnameInput.text()
@@ -109,10 +115,10 @@ class PersonContact(QWidget):
         for person in self.persons:
             if person["name"] == name and person["surname"] == surname:
                 self.resultArea.clear()
-                self.resultArea.append(f"Name: {person['name']}")
-                self.resultArea.append(f"Surname: {person['surname']}")
-                self.resultArea.append(f"Phone: {person['phone']}")
-                self.resultArea.append(f"Mail: {person['mail']}")
+                self.resultArea.append(f"Name: {person["name"]}")
+                self.resultArea.append(f"Surname: {person["surname"]}")
+                self.resultArea.append(f"Phone: {person["phone"]}")
+                self.resultArea.append(f"Mail: {person["mail"]}")
                 return
         
         self.resultArea.clear()
@@ -128,6 +134,7 @@ class PersonContact(QWidget):
                 self.resultArea.append(f"{person["name"]} {person["surname"]}")
                 
 
+    #file read
     def loadFile(self):
         try:
             with open(self.fileName, "r", encoding="utf-8") as file:
@@ -146,12 +153,14 @@ class PersonContact(QWidget):
                         }
                         self.persons.append(person)
         except FileNotFoundError:
-            self.resultArea.append("File not found. Starting with an empty contact list.\n")
+            self.resultArea.append("File not found.\n")
 
+    #add person to file
     def saveFile(self, person):
         with open(self.fileName, "a", encoding="utf-8") as file:
             file.write(f"{person["name"]} {person["surname"]}, Phone: {person["phone"]}, Mail: {person["mail"]}\n")
 
+    #file update
     def rewriteFile(self):
         with open(self.fileName, "w", encoding="utf-8") as file:
             for person in self.persons:
