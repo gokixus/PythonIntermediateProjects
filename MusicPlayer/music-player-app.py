@@ -19,7 +19,7 @@ class MusicPlayer(QWidget):
     
     def init_ui(self):
         self.setWindowTitle("MP3 Player")
-        self.setFixedSize(320, 240)
+        self.setGeometry(400, 320, 400, 320)
         layout = QVBoxLayout()
         
         self.setLayout(layout)
