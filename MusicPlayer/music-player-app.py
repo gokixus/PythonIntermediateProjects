@@ -10,6 +10,7 @@ class MusicPlayer(QWidget):
         pygame.mixer.init()
         
         self.currentMusic = None
+        self.isPaused = False
         self.volume = 0.5
         self.musicFolder = musicFolder
         self.musics = self.musicFromFolder(musicFolder)
@@ -39,23 +40,26 @@ class MusicPlayer(QWidget):
         layout.addWidget(QLabel("Sound Volume"))
         layout.addWidget(self.volumeSlider)
         
+        # Pause Music
+        self.pauseButton = QPushButton("Pause Music")
+        self.pauseButton.clicked.connect(self.pausedMusic)
+        layout.addWidget(self.pauseButton)
+        
+        # Unpause Music
+        self.unpauseButton = QPushButton("Unpause Music")
+        self.unpauseButton.clicked.connect(self.unpausedMusic)
+        layout.addWidget(self.unpauseButton)
+         
         # Random Music 
-        self.random_button = QPushButton('Random Music')
-        self.random_button.clicked.connect(self.randomMusic)
-        layout.addWidget(self.random_button)
+        self.randomButton = QPushButton("Random Music")
+        self.randomButton.clicked.connect(self.randomMusic)
+        layout.addWidget(self.randomButton)
         
     def playMusic(self, music):
         self.currentMusic = music
         self.currentMusicLabel.setText(f"Music currently playing: {os.path.basename(music)}")
         pygame.mixer.music.load(music)
         pygame.mixer.music.play()
-
-    def randomMusic(self):
-        if not self.musics:
-            return
-        
-        music = random.choice(self.musics)
-        self.playMusic(music)
     
     def playSelectedMusic(self, item):
         music = os.path.join(self.musicFolder, item.text())
@@ -74,6 +78,19 @@ class MusicPlayer(QWidget):
         self.volume = self.volumeSlider.value() / 100
         pygame.mixer.music.set_volume(self.volume)
     
+    def randomMusic(self):
+        if not self.musics:
+            return
+        music = random.choice(self.musics)
+        self.playMusic(music)
+    def pausedMusic(self):
+        if not self.isPaused:
+            pygame.mixer.music.pause()
+            self.isPaused = True
+    def unpausedMusic(self):
+        if self.isPaused:
+            pygame.mixer.music.unpause()
+            self.isPaused = False
     
 musicFolder = "music"
 app = QApplication(sys.argv)
