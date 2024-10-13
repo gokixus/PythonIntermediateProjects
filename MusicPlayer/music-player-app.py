@@ -1,5 +1,6 @@
 import pygame
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QPushButton, QVBoxLayout, QListWidget, QSlider
+from PyQt5.QtCore import Qt
 import sys
 import os
 import random
@@ -19,7 +20,7 @@ class MusicPlayer(QWidget):
     
     def init_ui(self):
         self.setWindowTitle("MP3 Player")
-        self.setGeometry(400, 320, 400, 320)
+        self.setGeometry(400, 240, 400, 240)
         layout = QVBoxLayout()
         
         self.setLayout(layout)
@@ -34,7 +35,7 @@ class MusicPlayer(QWidget):
         layout.addWidget(self.musicList)
         
         # Music Volume
-        self.volumeSlider = QSlider()
+        self.volumeSlider = QSlider(Qt.Horizontal)
         self.volumeSlider.setValue(int(self.volume * 100))
         self.volumeSlider.valueChanged.connect(self.setVolume)
         layout.addWidget(QLabel("Sound Volume"))
